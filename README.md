@@ -1,2 +1,2 @@
 # patient-tracker
-A basic CRUD application made with React Native.
+A real-time CRUD application made with React Native and Firebase.
