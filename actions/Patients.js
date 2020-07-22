@@ -13,7 +13,7 @@ import {
   UPDATE_PATIENT_REQUEST,
   UPDATE_PATIENT_SUCCESS,
   UPDATE_PATIENT_ERROR,
-} from '../config/Types';
+} from '../config/types';
 
 
 export const startPatientBackgroundJob = () => {
@@ -29,30 +29,31 @@ export const stopPatientBackgroundJob = () => {
 };
 
 
-export const getPatientRequest = () => {
+export const patientsRequest = () => {
   return {
     type: PATIENTS_REQUEST,
   };
 };
 
-export const getPatientSuccess = (patients) => {
+export const patientsSuccess = (patients) => {
   return {
     type: PATIENTS_SUCCESS,
     patients,
   };
 };
 
-export const getPatientError = () => {
+export const patientsError = () => {
   return {
     type: PATIENTS_ERROR,
   };
 };
 
 
-export const addPatientRequest = (body) => {
+export const addPatientRequest = (body, cb) => {
   return {
     type: ADD_PATIENT_REQUEST,
     body,
+    cb
   };
 };
 
@@ -69,10 +70,10 @@ export const addPatientError = () => {
 };
 
 
-export const deletePatientRequest = (doctorId) => {
+export const deletePatientRequest = (id) => {
   return {
     type: DELETE_PATIENT_REQUEST,
-    doctorId,
+    id,
   };
 };
 
@@ -89,10 +90,11 @@ export const deletePatientError = () => {
 };
 
 
-export const updatePatientRequest = (body) => {
+export const updatePatientRequest = (body, cb) => {
   return {
     type: UPDATE_PATIENT_REQUEST,
     body,
+    cb
   };
 };
 

@@ -22,12 +22,12 @@ function* login(action) {
   console.log("IN LOGIN SAGA", action)
   try {
     res = yield firebase.auth().signInWithEmailAndPassword(action.email, action.password);
-    console.log("FIREBASE LOGIN RESPONSE", res);
-    yield AsyncStorage.setItem('userToken', JSON.stringify(res.user));
-    yield put(loginSuccess(res.user));
+    console.log("FIREBASE LOGIN RESPONSE", res.user.uid);
+    yield AsyncStorage.setItem('userToken', res.user.uid);
+    yield put(loginSuccess(res.user.uid));
   } catch (e) {
     yield put(loginError())
-    alert(e);
+    alert(e.message ? e.message : "Error");
   }
 }
 
@@ -39,7 +39,6 @@ function* logout() {
     yield AsyncStorage.removeItem('userToken');
     yield put(setUserToken(null));
   } catch (e) {
-    console.log('logOutSaga',e);
   }
 }
 

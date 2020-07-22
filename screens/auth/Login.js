@@ -28,7 +28,7 @@ const loginSchema = Yup.object().shape({
     .email('Invalid email')
     .required('Required'),
   password: Yup.string()
-    .min(6, "Password must be at least 6 characters long")
+    //.min(6, "Password must be at least 6 characters long")
     .required('Required'),
 });
 
@@ -61,19 +61,18 @@ const Login = (props) => {
         <Text style={[styles.subheading, { marginTop: 20 }]}>
           Login to your account
         </Text>
-        <Input block placeholder="Email" style={{ marginTop: 30 }} value={formik.values.email} onChangeText={formik.handleChange("email")} onBlur={formik.handleBlur("email")} />
+        <Input placeholder="Email" style={[styles.content, { marginTop: 30 }]} value={formik.values.email} onChangeText={formik.handleChange("email")} onBlur={formik.handleBlur("email")} />
         {formik.errors.email && formik.touched.email && (
-          <Text style={styles.error}>{formik.errors.email}</Text>
+          <Text style={[styles.content, styles.error]}>{formik.errors.email}</Text>
         )}
-        <Input block placeholder="Password" style={{marginTop: 15}} secureTextEntry={true} value={formik.values.password} onChangeText={formik.handleChange("password")} onBlur={formik.handleBlur("password")} />
+        <Input placeholder="Password" style={[styles.content, {marginTop: 15}]} secureTextEntry={true} value={formik.values.password} onChangeText={formik.handleChange("password")} onBlur={formik.handleBlur("password")} />
         {formik.errors.password && formik.touched.password && (
-          <Text style={styles.error}>{formik.errors.password}</Text>
+          <Text style={[styles.content, styles.error]}>{formik.errors.password}</Text>
         )}
         {!loading.login ? (
           <Button
-            block
             onPress={formik.handleSubmit}
-            style={{marginTop: 30}}>
+            style={[styles.content, {marginTop: 30}]}>
             <Text style={{ color: "white" }}>Login</Text>
           </Button>
         ) : (
@@ -98,17 +97,21 @@ export default connect((state) => ({auth: state.Auth}), {loginRequest})(Login);
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    paddingTop: 40,
-    paddingBottom: 40,
+    paddingTop: 30,
+    paddingBottom: 30,
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
 
-    paddingRight: 20,
-    paddingLeft: 20
+    //paddingRight: 20,
+    //paddingLeft: 20
     //padding: 40
+  },
+  content: {
+    alignSelf: "stretch",
+    marginHorizontal: 20
   },
   imageStyle: {
     height: 150,
