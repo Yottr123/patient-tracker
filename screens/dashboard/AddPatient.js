@@ -119,6 +119,7 @@ const AddPatient = (props) => {
           placeholder="Phone"
           style={[styles.content, {marginTop: 15}]}
           value={formik.values.phone}
+          keyboardType="phone-pad"
           onChangeText={formik.handleChange('phone')}
           onBlur={formik.handleBlur('phone')}
         />

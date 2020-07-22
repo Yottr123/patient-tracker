@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect } from "react-redux";
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {connect} from 'react-redux';
+import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import Card from '../../components/card';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -12,7 +12,7 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 
-import {deletePatientRequest} from "../../actions/Patients";
+import {deletePatientRequest} from '../../actions/Patients';
 
 const PatientCard = (props) => {
   const {name, disease, phone, email, address, id} = props.patient || {};
@@ -27,10 +27,13 @@ const PatientCard = (props) => {
         </MenuTrigger>
         <MenuOptions
           customStyles={{
-            optionsContainer: {width: 100},
+            optionsContainer: {width: 100, borderRadius: 4},
             optionWrapper: {padding: 10},
           }}>
-          <MenuOption onSelect={() => navigation.navigate("EditPatient", {patient: props.patient})}>
+          <MenuOption
+            onSelect={() =>
+              navigation.navigate('EditPatient', {patient: props.patient})
+            }>
             <Text style={{color: 'black'}}>Edit</Text>
           </MenuOption>
           <MenuOption
@@ -41,7 +44,19 @@ const PatientCard = (props) => {
                 padding: 10,
               },
             }}
-            onSelect={() => props.deletePatientRequest(id)}>
+            onSelect={() => {
+              Alert.alert('', 'Are you sure you want to delete this patient?', [
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {
+                  text: 'Yes',
+                  onPress: () => props.deletePatientRequest(id),
+                },
+              ]);
+            }}>
             <Text style={{color: 'red'}}>Delete</Text>
           </MenuOption>
         </MenuOptions>
@@ -57,7 +72,7 @@ const PatientCard = (props) => {
   );
 };
 
-export default connect(null, { deletePatientRequest })(PatientCard);
+export default connect(null, {deletePatientRequest})(PatientCard);
 
 const styles = StyleSheet.create({
   container: {

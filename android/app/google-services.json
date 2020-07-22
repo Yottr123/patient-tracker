@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "616795536385",
+    "firebase_url": "https://patient-tracker-19b05.firebaseio.com",
+    "project_id": "patient-tracker-19b05",
+    "storage_bucket": "patient-tracker-19b05.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616795536385:android:2084de7d9f211fe09e9400",
+        "android_client_info": {
+          "package_name": "com.patienttracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616795536385-mk167gn1aluhtl3194tblu8em39etqv2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.patienttracker",
+            "certificate_hash": "28a66c0b6842bfe25bfbc1d3775d1a57541fe3ab"
+          }
+        },
+        {
+          "client_id": "616795536385-d8ec69re1qqb7fs049fvlbpoc75oh8fq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPqHmdevD23U0MzrxixjAkTfpRy2Jg8mA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616795536385-d8ec69re1qqb7fs049fvlbpoc75oh8fq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

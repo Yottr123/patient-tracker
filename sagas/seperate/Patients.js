@@ -16,7 +16,9 @@ import {
   DELETE_PATIENT_REQUEST,
   UPDATE_PATIENT_REQUEST,
 } from '../../config/types';
-import {firebase} from '../../config/firebase';
+//import {firebase} from '../../config/firebase';
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 import {
   addPatientSuccess,
   addPatientError,
@@ -34,12 +36,15 @@ import {eventChannel} from 'redux-saga';
 // Patient background job
 const createEventChannel = () => {
   const listener = eventChannel((emit) => {
-    firebase
-      .database()
-      .ref('patients')
+    let userId = auth().currentUser.uid;
+
+    console.log("DOCTOR ID", userId);
+
+    database()
+      .ref(`users/${userId}/patients`)
       //.child('doctor').equalTo("Gg9k61o71lPjMcmzDQ8hEnNcfMm2")
       .on('value', data => {
-        let userId = firebase.auth().currentUser.uid;
+        //let userId = auth().currentUser.uid;
 
         console.log("FB", data.val(), userId);
 
@@ -52,15 +57,15 @@ const createEventChannel = () => {
         }
 
         for (let [id, patient] of Object.entries(allPatients)) {
-          if (patient.doctor === userId) {
-            console.log(id, patient)
+          //if (patient.doctor === userId) {
+            //console.log(id, patient)
             patients = [{...patient, id}, ...patients];
-          }
+          //}
         }
 
         emit(patients);
       });
-    return () => firebase.database().ref('/patients').off('value');
+    return () => database().ref(`users/${userId}/patients`).off('value');
   });
 
   return listener;
@@ -108,16 +113,15 @@ function* addPatient(action) {
   console.log('ADD PATIENT SAGA');
   let res;
   try {
-    let doctor = yield firebase.auth().currentUser.uid;
+    let doctor = yield auth().currentUser.uid;
     //OR
     //let doctor = yield select(state => state.Auth.userToken);
 
-    res = yield firebase
-      .database()
-      .ref('/patients')
+    res = yield database()
+      .ref(`users/${doctor}/patients`)
       .push({
         ...action.body,
-        doctor,
+        //doctor,
         createdAt: moment().format('YYYY-MM-DD HH:mm:ss')
       });
 
@@ -140,7 +144,9 @@ function* deletePatient(action) {
   console.log('DELETE PATIENT SAGA', res);
   let res;
   try {
-    res = yield firebase.database().ref(`/patients/${action.id}`).remove();
+    let doctor = yield auth().currentUser.uid;
+
+    res = yield database().ref(`users/${doctor}/patients/${action.id}`).remove();
     console.log('DELETE PATIENT RESPONSE', res);
 
     yield put(deletePatientSuccess());
@@ -162,8 +168,10 @@ function* updatePatient(action) {
   try {
     let {id, ...rest} = action.body;
 
-    res = yield firebase.database().ref(`/patients/${id}`).update(rest);
-    console.log('UPDATE PATIENT RESPONSE', res);
+    let doctor = yield auth().currentUser.uid;
+
+    res = yield database().ref(`users/${doctor}/patients/${id}`).update(rest);
+    console.log('UPDATE PATIENT RESPONSE', res, `users/${doctor}/patients/${id}`);
 
     yield put(updatePatientSuccess());
     alert('Patient updated');

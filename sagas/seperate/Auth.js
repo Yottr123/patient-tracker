@@ -1,5 +1,7 @@
 import {put, takeLatest, call} from 'redux-saga/effects';
-import {firebase} from '../../config/firebase';
+//import {firebase} from '../../config/firebase';
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 import {AsyncStorage, ToastAndroid} from 'react-native';
 import {
   LOGIN_REQUEST,
@@ -21,7 +23,7 @@ function* login(action) {
   let res;
   console.log("IN LOGIN SAGA", action)
   try {
-    res = yield firebase.auth().signInWithEmailAndPassword(action.email, action.password);
+    res = yield auth().signInWithEmailAndPassword(action.email, action.password);
     console.log("FIREBASE LOGIN RESPONSE", res.user.uid);
     yield AsyncStorage.setItem('userToken', res.user.uid);
     yield put(loginSuccess(res.user.uid));
@@ -35,7 +37,7 @@ function* login(action) {
 // Logout
 function* logout() {
   try {
-    yield firebase.auth().signOut();
+    yield auth().signOut();
     yield AsyncStorage.removeItem('userToken');
     yield put(setUserToken(null));
   } catch (e) {
@@ -50,8 +52,7 @@ function* signUpSaga(action) {
   console.log('IN SIGNUP SAGA', action);
 
   try {
-    res = yield firebase
-      .auth()
+    res = yield auth()
       .createUserWithEmailAndPassword(action.email, action.password);
     // console.log('Sign up Saga', res.user.uid);
 
@@ -59,19 +60,24 @@ function* signUpSaga(action) {
       name: action.name,
       email: action.email,
       password: action.password,
-      uid: res.user.uid,
     };
+
+    let id = res.user.uid;
 
     console.log('IN SIGNUP SAGA', res);
 
-    res = yield firebase
-      .database()
-      .ref(`users/${user.uid}`)
+    res = yield database()
+      .ref(`users/${id}`)
       // .child()
       .set(user);
 
     console.log('IN SIGNUP SAGA', res);
     //yield put(setUser(userObj));
+
+    //LOGIN USER
+    yield AsyncStorage.setItem('userToken', id);
+    yield put(loginSuccess(id));
+
     alert("User created")
     yield put(signUpSuccess());
 

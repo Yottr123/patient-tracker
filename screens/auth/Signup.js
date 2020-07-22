@@ -55,7 +55,7 @@ const Login = (props) => {
           email: '',
           password: ''
         });
-        navigation.navigate("Login")
+        //navigation.navigate("Login")
       });
     },
   });
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
 
-    paddingRight: 20,
-    paddingLeft: 20
+    //paddingRight: 20,
+    //paddingLeft: 20
     //padding: 40
   },
   content: {

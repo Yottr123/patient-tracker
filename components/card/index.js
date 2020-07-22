@@ -1,10 +1,10 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 
 
 const Card = (props) => {
   return (
-    <TouchableOpacity {...props} style={[styles.card, props.style]} />
+    <View {...props} style={[styles.card, props.style]} />
   );
 };
 
